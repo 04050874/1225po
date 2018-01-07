@@ -1,6 +1,351 @@
-"id":"847431e5.e51f8","type":"debug","z":"2ca6127b.5ac17e","name":"","active":$
-{"id":"171b135f.778b1d","type":"rpi-gpio in","z":"2ca6127b.5ac17e","name":"butt$
-{"id":"b3816146.71335","type":"change","z":"2ca6127b.5ac17e",
-"name":"change to 1","rules":[{"t":"set","p":"payload","pt":"msg","to":"1","tot$
-"action":"","property":"","from":"","to":"","reg":false,
-"x":690,"y":200,"wires":[["66f7963a.3a6298"]]}]
+[
+    {
+        "id": "2ca6127b.5ac17e",
+        "type": "tab",
+        "label": "Flow 1"
+    },
+    {
+        "id": "3fd4ff0c.2b80f",
+        "type": "tab",
+        "label": "Flow 2"
+    },
+    {
+        "id": "ba13eefc.41962",
+        "type": "tab",
+        "label": "Flow 3"
+    },
+    {
+        "id": "66f7963a.3a6298",
+        "type": "rpi-gpio out",
+        "z": "2ca6127b.5ac17e",
+        "name": "GREEN LED",
+        "pin": "11",
+        "set": true,
+        "level": "1",
+        "freq": "",
+        "out": "out",
+        "x": 910,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "847431e5.e51f8",
+        "type": "debug",
+        "z": "2ca6127b.5ac17e",
+        "name": "",
+        "active": false,
+        "console": "false",
+        "complete": "payload",
+        "x": 690,
+        "y": 40,
+        "wires": []
+    },
+    {
+        "id": "171b135f.778b1d",
+        "type": "rpi-gpio in",
+        "z": "2ca6127b.5ac17e",
+        "name": "button",
+        "pin": "7",
+        "intype": "up",
+        "debounce": "25",
+        "read": true,
+        "x": 350,
+        "y": 80,
+        "wires": [
+            [
+                "847431e5.e51f8",
+                "be047246.be758"
+            ]
+        ]
+    },
+    {
+        "id": "be047246.be758",
+        "type": "switch",
+        "z": "2ca6127b.5ac17e",
+        "name": "if output is 1",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "eq",
+                "v": "1",
+                "vt": "str"
+            },
+            {
+                "t": "else"
+            }
+        ],
+        "checkall": "true",
+        "outputs": 2,
+        "x": 490,
+        "y": 160,
+        "wires": [
+            [
+                "1ce7dd1f.9868a3"
+            ],
+            [
+                "b3816146.71335"
+            ]
+        ]
+    },
+    {
+        "id": "1ce7dd1f.9868a3",
+        "type": "change",
+        "z": "2ca6127b.5ac17e",
+        "name": "change to 0",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "0",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 690,
+        "y": 140,
+        "wires": [
+            [
+                "66f7963a.3a6298"
+            ]
+        ]
+    },
+    {
+        "id": "b3816146.71335",
+        "type": "change",
+        "z": "2ca6127b.5ac17e",
+        "name": "change to 1",
+        "rules": [
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "1",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 690,
+        "y": 200,
+        "wires": [
+            [
+                "66f7963a.3a6298"
+            ]
+        ]
+    },
+    {
+        "id": "d3e289d0.bf6408",
+        "type": "inject",
+        "z": "3fd4ff0c.2b80f",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "x": 170,
+        "y": 120,
+        "wires": [
+            [
+                "baac224c.25d73"
+            ]
+        ]
+    },
+    {
+        "id": "baac224c.25d73",
+        "type": "function",
+        "z": "3fd4ff0c.2b80f",
+        "name": "payload",
+        "func": "msg.headers={\n    devicekey: \"kWi9130a2Wo7Qu0s\"\n};\n\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 360,
+        "y": 120,
+        "wires": [
+            [
+                "f97c9b85.ed8198",
+                "26c1a6f7.eced5a"
+            ]
+        ]
+    },
+    {
+        "id": "2b21a50f.4bed0a",
+        "type": "http response",
+        "z": "3fd4ff0c.2b80f",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 750,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "f97c9b85.ed8198",
+        "type": "http request",
+        "z": "3fd4ff0c.2b80f",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "url": "http://api.mediatek.com/mcs/v2/devices/DsVorDW2/datachannels/Temperature/datapoints.csv",
+        "tls": "",
+        "x": 550,
+        "y": 120,
+        "wires": [
+            [
+                "2b21a50f.4bed0a",
+                "7228fe85.c6ed7"
+            ]
+        ]
+    },
+    {
+        "id": "7228fe85.c6ed7",
+        "type": "debug",
+        "z": "3fd4ff0c.2b80f",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 750,
+        "y": 120,
+        "wires": []
+    },
+    {
+        "id": "26c1a6f7.eced5a",
+        "type": "http request",
+        "z": "3fd4ff0c.2b80f",
+        "name": "",
+        "method": "GET",
+        "ret": "txt",
+        "url": "http://api.mediatek.com/mcs/v2/devices/DsVorDW2/datachannels/Humidity/datapoints.csv",
+        "tls": "",
+        "x": 550,
+        "y": 180,
+        "wires": [
+            [
+                "2b21a50f.4bed0a",
+                "7228fe85.c6ed7"
+            ]
+        ]
+    },
+    {
+        "id": "8480444f.dee828",
+        "type": "inject",
+        "z": "ba13eefc.41962",
+        "name": "",
+        "topic": "",
+        "payload": "",
+        "payloadType": "date",
+        "repeat": "5",
+        "crontab": "",
+        "once": true,
+        "x": 130,
+        "y": 140,
+        "wires": [
+            [
+                "17ee396e.715947",
+                "f7d61a7e.23af28"
+            ]
+        ]
+    },
+    {
+        "id": "17ee396e.715947",
+        "type": "function",
+        "z": "ba13eefc.41962",
+        "name": "payload",
+        "func": "msg.headers={\n    devicekey: \"kWi9130a2Wo7Qu0s\"\n};\nmsg.payload=\"Temperature,,25.3\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 320,
+        "y": 140,
+        "wires": [
+            [
+                "dc4b674a.3e6968"
+            ]
+        ]
+    },
+    {
+        "id": "59d1ec93.9bc5d4",
+        "type": "http response",
+        "z": "ba13eefc.41962",
+        "name": "",
+        "statusCode": "",
+        "headers": {},
+        "x": 710,
+        "y": 220,
+        "wires": []
+    },
+    {
+        "id": "dc4b674a.3e6968",
+        "type": "http request",
+        "z": "ba13eefc.41962",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "url": "http://api.mediatek.com/mcs/v2/devices/DsVorDW2/datachannels/Temperature/datapoints.csv",
+        "tls": "",
+        "x": 510,
+        "y": 140,
+        "wires": [
+            [
+                "59d1ec93.9bc5d4",
+                "86bfa3f3.c585f"
+            ]
+        ]
+    },
+    {
+        "id": "86bfa3f3.c585f",
+        "type": "debug",
+        "z": "ba13eefc.41962",
+        "name": "",
+        "active": true,
+        "console": "false",
+        "complete": "false",
+        "x": 710,
+        "y": 140,
+        "wires": []
+    },
+    {
+        "id": "61a25277.83127c",
+        "type": "http request",
+        "z": "ba13eefc.41962",
+        "name": "",
+        "method": "POST",
+        "ret": "txt",
+        "url": "http://api.mediatek.com/mcs/v2/devices/DsVorDW2/datachannels/Humidity/datapoints.csv",
+        "tls": "",
+        "x": 510,
+        "y": 200,
+        "wires": [
+            [
+                "59d1ec93.9bc5d4",
+                "86bfa3f3.c585f"
+            ]
+        ]
+    },
+    {
+        "id": "f7d61a7e.23af28",
+        "type": "function",
+        "z": "ba13eefc.41962",
+        "name": "payload",
+        "func": "msg.headers={\n    devicekey: \"kWi9130a2Wo7Qu0s\"\n};\nmsg.payload=\"Humidity,,15\";\nreturn msg;",
+        "outputs": 1,
+        "noerr": 0,
+        "x": 320,
+        "y": 180,
+        "wires": [
+            [
+                "61a25277.83127c"
+            ]
+        ]
+    }
+]
